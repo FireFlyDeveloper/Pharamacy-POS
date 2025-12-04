@@ -1,5 +1,5 @@
 const { hash, compare } = require("../helpers/hash");
-const { register, login } = require("../models/auth");
+const { register, login, getCurrentUser, updatePassword } = require("../models/auth");
 const { generate } = require("../helpers/jwt");
 
 class AuthController {
@@ -45,6 +45,28 @@ class AuthController {
             const token = generate({ id: user.id, username: user.username });
 
             res.json({ token });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ message: "Server error" });
+        }
+    }
+
+    async changePassword(req, res) {
+        const { oldPassword, newPassword } = req.body;
+
+        if (!oldPassword || !newPassword)
+            return res.status(400).json({ message: "Old and new password required" });
+
+        try {
+            const user = await getCurrentUser(req.user.id);
+            const match = await compare(oldPassword, user.password);
+
+            if (!match) return res.status(400).json({ message: "Old password is incorrect" });
+
+            const hashedNewPassword = await hash(newPassword);
+            await updatePassword(hashedNewPassword, req.user.id);
+
+            res.json({ message: "Password changed successfully" });
         } catch (err) {
             console.error(err);
             res.status(500).json({ message: "Server error" });
