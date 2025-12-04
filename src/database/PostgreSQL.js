@@ -1,8 +1,10 @@
 const pg = require("pg");
 
-export const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL,
+const pool = new pg.Pool({
+  connectionString: process.env.POSTGRESQL,
   ssl: {
     rejectUnauthorized: false,
   },
 });
+
+module.exports = pool;
