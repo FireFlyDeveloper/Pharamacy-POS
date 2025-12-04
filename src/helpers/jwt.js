@@ -2,13 +2,13 @@ const jwt = require("jsonwebtoken");
 
 const jwt_secret = process.env.JWT_SECRET;
 
-function verify(token, req) {
-    jwt.verify(token, jwt_secret, (err, user) => {
-        if (err) return false;
-
-        req.user = user;
-        return true;
-    });
+function verify(token) {
+    try {
+        const result = jwt.verify(token, jwt_secret);
+        return result;
+    } catch {
+        return false;
+    }
 }
 
 function generate(options) {
