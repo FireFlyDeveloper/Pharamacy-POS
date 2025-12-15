@@ -6,6 +6,7 @@ const authRoutes = require("./src/routers/auth");
 const productsRoutes = require("./src/routers/products");
 const supplierRoutes = require("./src/routers/supplier");
 const salesRoutes = require("./src/routers/sales");
+const profileRoutes = require("./src/routers/profile");
 
 checker();
 
@@ -21,6 +22,7 @@ app.use("/auth", authRoutes);
 app.use("/products", productsRoutes);
 app.use("/suppliers", supplierRoutes);
 app.use("/sales", salesRoutes);
+app.use("/profile", profileRoutes);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
