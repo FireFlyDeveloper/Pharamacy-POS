@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const { checker } = require("./src/helpers/checker");
 const authRoutes = require("./src/routers/auth");
+const productsRoutes = require("./src/routers/products");
 
 checker();
 
@@ -15,6 +16,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/auth", authRoutes);
+app.use("/products", productsRoutes);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
